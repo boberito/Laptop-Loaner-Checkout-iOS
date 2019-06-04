@@ -97,3 +97,18 @@ class SessionDelegate:NSObject, URLSessionDelegate
         
     }
 }
+
+func getLocalJamfData(){
+    
+    guard let path = Bundle.main.path(forResource: "advancedsearch", ofType: "json") else { return }
+    
+    let data = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+    
+    let decoder = JSONDecoder()
+    let computerData = try! decoder.decode(advancedSearch.self, from: data)
+    print(computerData)
+    for entries in computerData.advanced_computer_search.computers {
+        computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
+        
+    }
+}

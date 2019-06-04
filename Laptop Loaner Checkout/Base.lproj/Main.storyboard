@@ -18,28 +18,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mcC-OK-Xdt">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mcC-OK-Xdt">
                                 <rect key="frame" x="0.0" y="64" width="1024" height="643"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="1024" id="0Kp-gZ-WTL"/>
-                                </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="loanerCell" textLabel="6CW-lz-7ni" rowHeight="126" style="IBUITableViewCellStyleDefault" id="WIb-hi-zA6">
-                                        <rect key="frame" x="0.0" y="28" width="1024" height="126"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="loanerCell" rowHeight="114" id="WIb-hi-zA6">
+                                        <rect key="frame" x="0.0" y="28" width="1024" height="114"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" semanticContentAttribute="forceLeftToRight" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WIb-hi-zA6" id="DQo-5Q-RIW">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="125.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="113.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6CW-lz-7ni">
-                                                    <rect key="frame" x="20" y="0.0" width="984" height="125.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -48,40 +37,8 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="0Fk-2p-itH"/>
                                 </connections>
                             </tableView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckOut" translatesAutoresizingMaskIntoConstraints="NO" id="0GZ-4I-3TV">
-                                <rect key="frame" x="10" y="786" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="8Fh-Bj-1lE"/>
-                                    <constraint firstAttribute="width" constant="100" id="hzc-ip-jPb"/>
-                                </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckIn" translatesAutoresizingMaskIntoConstraints="NO" id="ohy-cm-22g">
-                                <rect key="frame" x="135" y="786" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="8ee-I4-XwX"/>
-                                    <constraint firstAttribute="width" constant="100" id="ek5-kj-qWx"/>
-                                </constraints>
-                            </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gears" translatesAutoresizingMaskIntoConstraints="NO" id="nje-E8-x4P">
-                                <rect key="frame" x="310" y="786" width="100" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="xrb-iI-Ddf"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="nje-E8-x4P" firstAttribute="top" secondItem="mcC-OK-Xdt" secondAttribute="bottom" constant="79" id="1G3-IN-BNh"/>
-                            <constraint firstItem="mcC-OK-Xdt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="8Aq-rq-hu8"/>
-                            <constraint firstAttribute="bottom" secondItem="ohy-cm-22g" secondAttribute="bottom" constant="10" id="BzB-Dy-7Xi"/>
-                            <constraint firstItem="nje-E8-x4P" firstAttribute="leading" secondItem="ohy-cm-22g" secondAttribute="trailing" constant="75" id="HbO-l5-5t9"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nje-E8-x4P" secondAttribute="trailing" constant="4" id="TFl-ed-LQe"/>
-                            <constraint firstAttribute="bottom" secondItem="0GZ-4I-3TV" secondAttribute="bottom" constant="10" id="UYP-kg-lRa"/>
-                            <constraint firstItem="0GZ-4I-3TV" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Uj5-ws-bzB"/>
-                            <constraint firstItem="mcC-OK-Xdt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZK5-Gl-p66"/>
-                            <constraint firstItem="ohy-cm-22g" firstAttribute="leading" secondItem="0GZ-4I-3TV" secondAttribute="leading" constant="125" id="epm-kI-Zsj"/>
-                            <constraint firstAttribute="bottom" secondItem="nje-E8-x4P" secondAttribute="bottom" constant="10" id="wno-hc-f1B"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
@@ -93,9 +50,4 @@
             <point key="canvasLocation" x="136.23188405797103" y="113.16964285714285"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="CheckIn" width="512" height="512"/>
-        <image name="CheckOut" width="512" height="512"/>
-        <image name="gears" width="256" height="256"/>
-    </resources>
 </document>

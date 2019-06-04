@@ -46,8 +46,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
-        tableView.reloadData()
+        //getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+        getLocalJamfData()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,11 +59,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell", for: indexPath)
-        let row = indexPath.row
-        cell.textLabel?.text = "hello \(row)"
-        print(computerList[row].name)
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell")
+        cell?.textLabel?.text = computerList[indexPath.row].name
+        return cell!
     }
     
     
