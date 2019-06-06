@@ -25,15 +25,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
-        //VCcomputerList = getLocalJamfData()
-      //  VCcomputerList = JamfCalls.getLocalJamfData()
         
         apiCalls.getLocalJamfData()
         
         //apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
         tableView.delegate = self
         tableView.dataSource = self
+        
+        
+        
         
     }
  

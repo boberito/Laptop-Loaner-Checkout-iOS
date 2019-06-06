@@ -26,8 +26,4 @@ class computerObject {
         self.Department = Department
     }
     
-    func justPrint() {
-        print("something")
-    }
-    
 }
