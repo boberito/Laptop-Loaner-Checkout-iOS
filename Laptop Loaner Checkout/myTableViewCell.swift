@@ -11,7 +11,12 @@ import UIKit
 class myTableViewCell: UITableViewCell {
 
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var availabilityLabel: UILabel!
+    @IBOutlet var userNameLabel: UILabel!
+    @IBOutlet var dateOutLabel: UILabel!
+    
+    @IBOutlet var dotImage: UIImageView!
+    
+
     
     override func awakeFromNib() {
         super.awakeFromNib()

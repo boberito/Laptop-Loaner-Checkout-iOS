@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		732742B922A8A0F5005BFA2A /* reddot.png in Resources */ = {isa = PBXBuildFile; fileRef = 732742B722A8A0F5005BFA2A /* reddot.png */; };
+		732742BA22A8A0F5005BFA2A /* greendot.png in Resources */ = {isa = PBXBuildFile; fileRef = 732742B822A8A0F5005BFA2A /* greendot.png */; };
 		735B74B12292089600914E7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B74B02292089600914E7F /* AppDelegate.swift */; };
 		735B74B32292089600914E7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B74B22292089600914E7F /* ViewController.swift */; };
 		735B74B62292089600914E7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735B74B42292089600914E7F /* Main.storyboard */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		732742B722A8A0F5005BFA2A /* reddot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reddot.png; sourceTree = "<group>"; };
+		732742B822A8A0F5005BFA2A /* greendot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greendot.png; sourceTree = "<group>"; };
 		735B74AD2292089600914E7F /* Laptop Loaner Checkout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Laptop Loaner Checkout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		735B74B02292089600914E7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		735B74B22292089600914E7F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 		735B74AF2292089600914E7F /* Laptop Loaner Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				732742B822A8A0F5005BFA2A /* greendot.png */,
+				732742B722A8A0F5005BFA2A /* reddot.png */,
 				735B74B02292089600914E7F /* AppDelegate.swift */,
 				735B74B22292089600914E7F /* ViewController.swift */,
 				736373F122A89524003481A6 /* myTableViewCell.swift */,
@@ -137,8 +143,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				732742B922A8A0F5005BFA2A /* reddot.png in Resources */,
 				735B74BB2292089700914E7F /* LaunchScreen.storyboard in Resources */,
 				735B74B82292089700914E7F /* Assets.xcassets in Resources */,
+				732742BA22A8A0F5005BFA2A /* greendot.png in Resources */,
 				735B74B62292089600914E7F /* Main.storyboard in Resources */,
 				735F27B222A61B2D00923030 /* advancedsearch.json in Resources */,
 			);
