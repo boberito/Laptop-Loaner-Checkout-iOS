@@ -16,64 +16,47 @@ var availabilityID = "69"
 var checkInID = "68"
 var checkOutID = "67"
 
-//var computerList = [computerObject]()
-
-class computerObject {
-    var name: String
-    var id: Int
-    var DateReturned: String
-    var DateOut: String
-    var Availability: String
-    var Username: String
-    var Department: String
-    
-    init(name: String, id: Int, DateReturned: String, DateOut: String, Availability: String, Username: String, Department: String) {
-        self.name = name
-        self.id = id
-        self.DateReturned = DateReturned
-        self.DateOut = DateOut
-        self.Availability = Availability
-        self.Username = Username
-        self.Department = Department
-    }
-    
-}
-
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
     @IBOutlet var tableView: UITableView!
-    var VCcomputerList = [computerObject]()
     
+    let apiCalls = JamfCalls()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         //getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
-        VCcomputerList = getLocalJamfData()
+        //VCcomputerList = getLocalJamfData()
+      //  VCcomputerList = JamfCalls.getLocalJamfData()
         
+        apiCalls.getLocalJamfData()
+        
+        //apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
         tableView.delegate = self
         tableView.dataSource = self
         
     }
  
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return VCcomputerList.count
+        return apiCalls.computerList.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
         
-        cell.nameLabel.text = VCcomputerList[indexPath.row].name
-        cell.userNameLabel.text = VCcomputerList[indexPath.row].Username
+        cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
+        cell.userNameLabel.text = apiCalls.computerList[indexPath.row].Username
         
-        if VCcomputerList[indexPath.row].Availability == "No" {
+        if apiCalls.computerList[indexPath.row].Availability == "No" {
             cell.dotImage.image = UIImage(named: "reddot.png")
-            cell.dateOutLabel.text = "Checked Out: \(VCcomputerList[indexPath.row].DateOut)"
+            cell.dateOutLabel.text = "Checked Out: \(apiCalls.computerList[indexPath.row].DateOut)"
             
         } else {
             cell.dotImage.image = UIImage(named: "greendot.png")
-            cell.dateOutLabel.text = "Checked In: \(VCcomputerList[indexPath.row].DateReturned)"
+            cell.dateOutLabel.text = "Checked In: \(apiCalls.computerList[indexPath.row].DateReturned)"
             
         }
         
@@ -83,7 +66,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
             let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
-                if self.VCcomputerList[indexPath.row].Availability == "No" {
+                if self.apiCalls.computerList[indexPath.row].Availability == "No" {
                     print("Checked In")
                 } else {
                     print("Checked Out")
@@ -92,7 +75,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             changeStatus.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
-            if VCcomputerList[indexPath.row].Availability == "No" {
+            if apiCalls.computerList[indexPath.row].Availability == "No" {
                 changeStatus.title = "Check In"
                 changeStatus.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
                 
@@ -108,7 +91,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
-            if self.VCcomputerList[indexPath.row].Availability == "No" {
+            if self.apiCalls.computerList[indexPath.row].Availability == "No" {
                 print("Checked In")
             } else {
                 print("Checked Out")
@@ -116,7 +99,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         changeStatus.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
-        if VCcomputerList[indexPath.row].Availability == "No" {
+        if apiCalls.computerList[indexPath.row].Availability == "No" {
             changeStatus.title = "Check In"
             changeStatus.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
             

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		732742B922A8A0F5005BFA2A /* reddot.png in Resources */ = {isa = PBXBuildFile; fileRef = 732742B722A8A0F5005BFA2A /* reddot.png */; };
-		732742BA22A8A0F5005BFA2A /* greendot.png in Resources */ = {isa = PBXBuildFile; fileRef = 732742B822A8A0F5005BFA2A /* greendot.png */; };
 		735B74B12292089600914E7F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B74B02292089600914E7F /* AppDelegate.swift */; };
 		735B74B32292089600914E7F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B74B22292089600914E7F /* ViewController.swift */; };
 		735B74B62292089600914E7F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735B74B42292089600914E7F /* Main.storyboard */; };
@@ -19,11 +17,12 @@
 		73F1083822976AB600FBB231 /* jamfData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083722976AB600FBB231 /* jamfData.swift */; };
 		73F1083A22976B1100FBB231 /* getData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083922976B1100FBB231 /* getData.swift */; };
 		73F1083C22976BBF00FBB231 /* putData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083B22976BBF00FBB231 /* putData.swift */; };
+		86B46FF022A9639900AE1077 /* JamfCalls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B46FEF22A9639900AE1077 /* JamfCalls.swift */; };
+		86B46FF222A96DEB00AE1077 /* computerObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B46FF122A96DEB00AE1077 /* computerObject.swift */; };
+		86B46FF422A96E1A00AE1077 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B46FF322A96E1A00AE1077 /* SessionDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		732742B722A8A0F5005BFA2A /* reddot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reddot.png; sourceTree = "<group>"; };
-		732742B822A8A0F5005BFA2A /* greendot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = greendot.png; sourceTree = "<group>"; };
 		735B74AD2292089600914E7F /* Laptop Loaner Checkout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Laptop Loaner Checkout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		735B74B02292089600914E7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		735B74B22292089600914E7F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +35,9 @@
 		73F1083722976AB600FBB231 /* jamfData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jamfData.swift; sourceTree = "<group>"; };
 		73F1083922976B1100FBB231 /* getData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getData.swift; sourceTree = "<group>"; };
 		73F1083B22976BBF00FBB231 /* putData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = putData.swift; sourceTree = "<group>"; };
+		86B46FEF22A9639900AE1077 /* JamfCalls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamfCalls.swift; sourceTree = "<group>"; };
+		86B46FF122A96DEB00AE1077 /* computerObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = computerObject.swift; sourceTree = "<group>"; };
+		86B46FF322A96E1A00AE1077 /* SessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,14 +70,15 @@
 		735B74AF2292089600914E7F /* Laptop Loaner Checkout */ = {
 			isa = PBXGroup;
 			children = (
-				732742B822A8A0F5005BFA2A /* greendot.png */,
-				732742B722A8A0F5005BFA2A /* reddot.png */,
 				735B74B02292089600914E7F /* AppDelegate.swift */,
 				735B74B22292089600914E7F /* ViewController.swift */,
+				86B46FF122A96DEB00AE1077 /* computerObject.swift */,
 				736373F122A89524003481A6 /* myTableViewCell.swift */,
+				86B46FEF22A9639900AE1077 /* JamfCalls.swift */,
 				735F27B122A61B2D00923030 /* advancedsearch.json */,
 				73F1083722976AB600FBB231 /* jamfData.swift */,
 				73F1083922976B1100FBB231 /* getData.swift */,
+				86B46FF322A96E1A00AE1077 /* SessionDelegate.swift */,
 				73F1083B22976BBF00FBB231 /* putData.swift */,
 				735B74B42292089600914E7F /* Main.storyboard */,
 				735B74B72292089700914E7F /* Assets.xcassets */,
@@ -143,10 +146,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				732742B922A8A0F5005BFA2A /* reddot.png in Resources */,
 				735B74BB2292089700914E7F /* LaunchScreen.storyboard in Resources */,
 				735B74B82292089700914E7F /* Assets.xcassets in Resources */,
-				732742BA22A8A0F5005BFA2A /* greendot.png in Resources */,
 				735B74B62292089600914E7F /* Main.storyboard in Resources */,
 				735F27B222A61B2D00923030 /* advancedsearch.json in Resources */,
 			);
@@ -162,7 +163,10 @@
 				73F1083C22976BBF00FBB231 /* putData.swift in Sources */,
 				73F1083822976AB600FBB231 /* jamfData.swift in Sources */,
 				735B74B32292089600914E7F /* ViewController.swift in Sources */,
+				86B46FF422A96E1A00AE1077 /* SessionDelegate.swift in Sources */,
 				73F1083A22976B1100FBB231 /* getData.swift in Sources */,
+				86B46FF022A9639900AE1077 /* JamfCalls.swift in Sources */,
+				86B46FF222A96DEB00AE1077 /* computerObject.swift in Sources */,
 				735B74B12292089600914E7F /* AppDelegate.swift in Sources */,
 				736373F222A89524003481A6 /* myTableViewCell.swift in Sources */,
 			);
