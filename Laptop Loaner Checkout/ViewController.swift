@@ -51,11 +51,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.userNameLabel.text = apiCalls.computerList[indexPath.row].Username
         
         if apiCalls.computerList[indexPath.row].Availability == "No" {
-            cell.dotImage.image = UIImage(named: "reddot.png")
+            cell.dotImage.image = UIImage(named: "reddot")
             cell.dateOutLabel.text = "Checked Out: \(apiCalls.computerList[indexPath.row].DateOut)"
             
         } else {
-            cell.dotImage.image = UIImage(named: "greendot.png")
+            cell.dotImage.image = UIImage(named: "greendot")
             cell.dateOutLabel.text = "Checked In: \(apiCalls.computerList[indexPath.row].DateReturned)"
             
         }
