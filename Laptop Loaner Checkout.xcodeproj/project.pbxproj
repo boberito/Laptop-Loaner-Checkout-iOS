@@ -13,6 +13,7 @@
 		735B74B82292089700914E7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 735B74B72292089700914E7F /* Assets.xcassets */; };
 		735B74BB2292089700914E7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735B74B92292089700914E7F /* LaunchScreen.storyboard */; };
 		735F27B222A61B2D00923030 /* advancedsearch.json in Resources */ = {isa = PBXBuildFile; fileRef = 735F27B122A61B2D00923030 /* advancedsearch.json */; };
+		736373F222A89524003481A6 /* myTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736373F122A89524003481A6 /* myTableViewCell.swift */; };
 		73F1083822976AB600FBB231 /* jamfData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083722976AB600FBB231 /* jamfData.swift */; };
 		73F1083A22976B1100FBB231 /* getData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083922976B1100FBB231 /* getData.swift */; };
 		73F1083C22976BBF00FBB231 /* putData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F1083B22976BBF00FBB231 /* putData.swift */; };
@@ -27,6 +28,7 @@
 		735B74BA2292089700914E7F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		735B74BC2292089700914E7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		735F27B122A61B2D00923030 /* advancedsearch.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = advancedsearch.json; sourceTree = "<group>"; };
+		736373F122A89524003481A6 /* myTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myTableViewCell.swift; sourceTree = "<group>"; };
 		73F1083722976AB600FBB231 /* jamfData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jamfData.swift; sourceTree = "<group>"; };
 		73F1083922976B1100FBB231 /* getData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getData.swift; sourceTree = "<group>"; };
 		73F1083B22976BBF00FBB231 /* putData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = putData.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			children = (
 				735B74B02292089600914E7F /* AppDelegate.swift */,
 				735B74B22292089600914E7F /* ViewController.swift */,
+				736373F122A89524003481A6 /* myTableViewCell.swift */,
 				735F27B122A61B2D00923030 /* advancedsearch.json */,
 				73F1083722976AB600FBB231 /* jamfData.swift */,
 				73F1083922976B1100FBB231 /* getData.swift */,
@@ -153,6 +156,7 @@
 				735B74B32292089600914E7F /* ViewController.swift in Sources */,
 				73F1083A22976B1100FBB231 /* getData.swift in Sources */,
 				735B74B12292089600914E7F /* AppDelegate.swift in Sources */,
+				736373F222A89524003481A6 /* myTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

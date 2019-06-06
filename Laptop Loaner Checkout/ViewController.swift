@@ -16,7 +16,7 @@ var availabilityID = "69"
 var checkInID = "68"
 var checkOutID = "67"
 
-var computerList = [computerObject]()
+//var computerList = [computerObject]()
 
 class computerObject {
     var name: String
@@ -42,12 +42,13 @@ class computerObject {
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
 
     @IBOutlet var tableView: UITableView!
+    var VCcomputerList = [computerObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         //getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
-        getLocalJamfData()
+        VCcomputerList = getLocalJamfData()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -55,13 +56,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return computerList.count
+        return VCcomputerList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell")
-        cell?.textLabel?.text = computerList[indexPath.row].name
-        return cell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
+        //cell?.textLabel?.text = VCcomputerList[indexPath.row].name
+        cell.nameLabel.text = VCcomputerList[indexPath.row].name
+        cell.availabilityLabel.text = VCcomputerList[indexPath.row].Availability
+        return cell
     }
     
     
