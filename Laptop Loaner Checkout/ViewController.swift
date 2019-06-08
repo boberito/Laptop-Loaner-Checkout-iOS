@@ -9,8 +9,8 @@
 import UIKit
 
 var jamfUser = "admin"
-var jamfPassword = "***REMOVED***"
-var jamfURL = "https://***REMOVED***:8443/"
+var jamfPassword = ""
+var jamfURL = ""
 var acsID = "68"
 var availabilityID = "69"
 var checkInID = "68"
