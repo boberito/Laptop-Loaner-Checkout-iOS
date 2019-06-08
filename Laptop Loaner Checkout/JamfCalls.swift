@@ -8,9 +8,15 @@
 
 import Foundation
 
+
+protocol DataModelDelegate: class {
+    func didRecieveDataUpdate(data: [computerObject])
+}
+
 class JamfCalls {
     var computerList = [computerObject]()
     
+    weak var delegate: DataModelDelegate?
 
     func getLocalJamfData() {
         guard let path = Bundle.main.path(forResource: "advancedsearch", ofType: "json") else { return }
@@ -79,8 +85,12 @@ class JamfCalls {
                             self.computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
     
                         }
+                        
+                        
                         DispatchQueue.main.async {
                             //self.tableView.reloadData()
+                            self.delegate?.didRecieveDataUpdate(data: self.computerList)
+
                         }
                     default:
                         DispatchQueue.main.async {
@@ -98,6 +108,7 @@ class JamfCalls {
             }
         }
         task.resume()
+        
     }
     
     

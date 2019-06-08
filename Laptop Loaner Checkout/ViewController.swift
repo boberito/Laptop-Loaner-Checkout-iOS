@@ -8,30 +8,38 @@
 
 import UIKit
 
-var jamfUser = ""
-var jamfPassword = ""
-var jamfURL = ""
+var jamfUser = "admin"
+var jamfPassword = "***REMOVED***"
+var jamfURL = "https://***REMOVED***:8443/"
 var acsID = "68"
 var availabilityID = "69"
 var checkInID = "68"
 var checkOutID = "67"
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DataModelDelegate  {
+    func didRecieveDataUpdate(data: [computerObject]) {
+        self.tableView.reloadData()
+    }
+    
 
     @IBOutlet var tableView: UITableView!
     
     let apiCalls = JamfCalls()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        apiCalls.getLocalJamfData()
+        apiCalls.delegate = self
         
-        //apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+        
+        //apiCalls.getLocalJamfData()
+        
+    
+        apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
         tableView.delegate = self
         tableView.dataSource = self
-        
+        tableView.reloadData()
         
         
         
@@ -52,12 +60,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if apiCalls.computerList[indexPath.row].Availability == "No" {
             cell.dotImage.image = UIImage(named: "reddot")
-            cell.dateOutLabel.text = "Checked Out: \(apiCalls.computerList[indexPath.row].DateOut)"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat =  "yyyy-MM-dd"
+            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateOut)
+            
+            dateFormatter.dateFormat = "MM-dd-yyy"
+            let updateDateString = dateFormatter.string(from: dateOut!)
+            
+            cell.dateOutLabel.text = "Checked Out: \(updateDateString)"
             
         } else {
             cell.dotImage.image = UIImage(named: "greendot")
-            cell.dateOutLabel.text = "Checked In: \(apiCalls.computerList[indexPath.row].DateReturned)"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat =  "yyyy-MM-dd"
+            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateReturned)
+        
+            dateFormatter.dateFormat = "MM-dd-yyy"
+            let updateDateString = dateFormatter.string(from: dateOut!)
             
+            cell.dateOutLabel.text = "Checked In: \(updateDateString)"
+ 
         }
         
         return cell
@@ -112,4 +134,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
 }
-
