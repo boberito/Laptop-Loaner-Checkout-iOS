@@ -9,8 +9,8 @@
 import UIKit
 
 var jamfUser = ""
-var jamfPassword = ""
-var jamfURL = ""
+var jamfPassword = "!"
+var jamfURL = "https://:8443/"
 var acsID = "68"
 var availabilityID = "69"
 var checkInID = "68"
@@ -85,7 +85,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 if self.apiCalls.computerList[indexPath.row].Availability == "No" {
                     print("Checked In")
                 } else {
-                    print("Checked Out")
+                    //
+                    self.doAlertControllerDemo(selected: indexPath.row)
                 }
                 
             }
@@ -110,7 +111,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if self.apiCalls.computerList[indexPath.row].Availability == "No" {
                 print("Checked In")
             } else {
-                print("Checked Out")
+                self.doAlertControllerDemo(selected: indexPath.row)
+                
             }
         }
         changeStatus.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
@@ -127,4 +129,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    
+    
+    
+    func doAlertControllerDemo(selected: Int) {
+        
+        var inputTextField: UITextField?;
+        
+        let userPrompt = UIAlertController(title: "Enter Username", message: "You have selected to check out a Loaner Laptop.", preferredStyle: UIAlertController.Style.alert);
+        
+        userPrompt.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: { (action) -> Void in            
+            let entryStr : String = (inputTextField?.text)! ;
+            
+            let today = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let dateOut = formatter.string(from: today)
+            
+            self.apiCalls.putJamfData(jamfID: self.apiCalls.computerList[selected].id, date: dateOut, availability: "No", username: entryStr)
+            //doAlertViewDemo(); //do again!
+        }));
+        
+        
+        userPrompt.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: { (action) -> Void in
+            //print("done");
+        }));
+        
+        
+        userPrompt.addTextField(configurationHandler: {(textField: UITextField!) in
+            
+            textField.isSecureTextEntry = false
+            inputTextField = textField
+        });
+        
+        
+        self.present(userPrompt, animated: true, completion: nil);
+        
+        
+        return;
+    }
 }

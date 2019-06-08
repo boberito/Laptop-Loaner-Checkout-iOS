@@ -122,7 +122,7 @@ class JamfCalls {
         } else {
             xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username>" + username + "</username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(availabilityID)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(checkOutID)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
         }
-        
+        //print("\(requestURL) - \(xmldata)")
         let loginData = "\(jamfUser):\(jamfPassword)".data(using: String.Encoding.utf8)
         let base64LoginString = loginData!.base64EncodedString()
         let postData = NSData(data: xmldata.data(using: String.Encoding.utf8)!)
@@ -130,21 +130,23 @@ class JamfCalls {
         let request = NSMutableURLRequest(url: NSURL(string: requestURL)! as URL,cachePolicy: .useProtocolCachePolicy,timeoutInterval: 10.0)
         request.httpMethod = "PUT"
         request.allHTTPHeaderFields = headers
+        let sessionDelegate = SessionDelegate()
+        let session = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: OperationQueue.main)
+
         request.httpBody = postData as Data
-        
-        
+
+
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
-        
-        let session = URLSession.shared
+
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-            
+
             dispatchGroup.leave()
         }
         )
-        
+
         dataTask.resume()
-        
+
         dispatchGroup.wait()
         
     }
