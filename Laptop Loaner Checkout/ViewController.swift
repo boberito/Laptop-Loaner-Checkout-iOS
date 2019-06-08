@@ -8,7 +8,7 @@
 
 import UIKit
 
-var jamfUser = "admin"
+var jamfUser = ""
 var jamfPassword = ""
 var jamfURL = ""
 var acsID = "68"
@@ -31,22 +31,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view.
         
         apiCalls.delegate = self
-        
-        
+    
         //apiCalls.getLocalJamfData()
         
-    
         apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
-        
-        
-        
-    }
- 
 
-    
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return apiCalls.computerList.count
         
