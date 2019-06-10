@@ -14,7 +14,6 @@ class SessionDelegate:NSObject, URLSessionDelegate
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust)
         {
-            print(challenge.protectionSpace.host)
             if(challenge.protectionSpace.host == "***REMOVED***")
             {
                 let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)

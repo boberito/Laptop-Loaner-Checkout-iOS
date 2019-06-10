@@ -9,8 +9,8 @@
 import UIKit
 
 var jamfUser = ""
-var jamfPassword = "!"
-var jamfURL = "https://:8443/"
+var jamfPassword = ""
+var jamfURL = "/"
 var acsID = "68"
 var availabilityID = "69"
 var checkInID = "68"
@@ -83,10 +83,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
             let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
                 if self.apiCalls.computerList[indexPath.row].Availability == "No" {
-                    print("Checked In")
+                    self.checkIn(selected: indexPath.row)
                 } else {
                     //
-                    self.doAlertControllerDemo(selected: indexPath.row)
+                    self.dialogBox(selected: indexPath.row)
+                    
                 }
                 
             }
@@ -100,18 +101,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let config = UISwipeActionsConfiguration(actions: [changeStatus])
         config.performsFirstActionWithFullSwipe = false
+        
         return config
-        }
-        //return UISwipeActionsConfiguration(actions: changeStatus)
+        
+    }
+    
     
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
             if self.apiCalls.computerList[indexPath.row].Availability == "No" {
-                print("Checked In")
+                self.checkIn(selected: indexPath.row)
             } else {
-                self.doAlertControllerDemo(selected: indexPath.row)
+                self.dialogBox(selected: indexPath.row)
                 
             }
         }
@@ -130,9 +133,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
+    func checkIn(selected: Int) {
+        //print("Checked In")
+        let today = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateIn = formatter.string(from: today)
+        
+        self.apiCalls.putJamfData(jamfID: self.apiCalls.computerList[selected].id, date: dateIn, availability: "Yes", username: "")
+        self.apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+        self.tableView.reloadData()
+    }
     
     
-    func doAlertControllerDemo(selected: Int) {
+    
+    func dialogBox(selected: Int) {
         
         var inputTextField: UITextField?;
         
@@ -147,12 +162,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let dateOut = formatter.string(from: today)
             
             self.apiCalls.putJamfData(jamfID: self.apiCalls.computerList[selected].id, date: dateOut, availability: "No", username: entryStr)
-            //doAlertViewDemo(); //do again!
+            self.tableView.reloadData()
         }));
         
         
         userPrompt.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: { (action) -> Void in
-            //print("done");
+            
         }));
         
         
@@ -165,6 +180,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         self.present(userPrompt, animated: true, completion: nil);
         
+        self.apiCalls.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+        self.tableView.reloadData()
         
         return;
     }

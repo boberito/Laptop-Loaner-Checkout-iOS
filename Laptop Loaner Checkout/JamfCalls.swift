@@ -25,7 +25,7 @@ class JamfCalls {
         
         let decoder = JSONDecoder()
         let computerData = try! decoder.decode(advancedSearch.self, from: data)
-        //print(computerData)
+        
         for entries in computerData.advanced_computer_search.computers {
             computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
             
@@ -77,7 +77,7 @@ class JamfCalls {
     
                     case 200:
                         self.computerList.removeAll()
-                        print("Success!")
+                        
                         let decoder = JSONDecoder()
                         let computerData = try decoder.decode(advancedSearch.self, from: dataReturn!)
     
@@ -113,8 +113,9 @@ class JamfCalls {
     
     
     func putJamfData(jamfID: Int, date: String, availability: String, username: String) {
+
         var xmldata: String
-        
+
         let requestURL = "\(jamfURL)JSSResource/computers/id/\(jamfID)"
         
         if availability == "Yes" {
@@ -122,33 +123,43 @@ class JamfCalls {
         } else {
             xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username>" + username + "</username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(availabilityID)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(checkOutID)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
         }
-        //print("\(requestURL) - \(xmldata)")
+        
+
+        
         let loginData = "\(jamfUser):\(jamfPassword)".data(using: String.Encoding.utf8)
         let base64LoginString = loginData!.base64EncodedString()
+        let headers = [
+            "Content-Type": "text/xml",
+            "Authorization": "Basic \(base64LoginString)"
+        ]
         let postData = NSData(data: xmldata.data(using: String.Encoding.utf8)!)
-        let headers = ["Content-Type": "text/xml", "Authorization": "Basic \(String(describing: base64LoginString))"]
-        let request = NSMutableURLRequest(url: NSURL(string: requestURL)! as URL,cachePolicy: .useProtocolCachePolicy,timeoutInterval: 10.0)
+        let request = NSMutableURLRequest(url: NSURL(string: requestURL)! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10.0)
         request.httpMethod = "PUT"
         request.allHTTPHeaderFields = headers
+
+        
         let sessionDelegate = SessionDelegate()
         let session = URLSession(configuration: .default, delegate: sessionDelegate, delegateQueue: OperationQueue.main)
 
         request.httpBody = postData as Data
 
-
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-
+        
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+            if (error != nil) {
+                //print(error!)
+            } else {
+                DispatchQueue.main.async {
+                
+                self.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+                }
+                //let httpResponse = response as? HTTPURLResponse
+                //print(httpResponse!)
+            }
 
-            dispatchGroup.leave()
-        }
-        )
-
+        })
+        
         dataTask.resume()
 
-        dispatchGroup.wait()
-        
     }
 
 }
