@@ -10,32 +10,22 @@ import Foundation
 
 
 protocol DataModelDelegate: class {
-    func didRecieveDataUpdate(data: [computerObject])
+    func didRecieveDataUpdate(data: [computerObject], statusCode: Int)
 }
 
 class JamfCalls {
     var computerList = [computerObject]()
     
     weak var delegate: DataModelDelegate?
-
-    func getLocalJamfData() {
-        guard let path = Bundle.main.path(forResource: "advancedsearch", ofType: "json") else { return }
-        
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-        
-        let decoder = JSONDecoder()
-        let computerData = try! decoder.decode(advancedSearch.self, from: data)
-        
-        for entries in computerData.advanced_computer_search.computers {
-            computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
-            
-        }
-        
-        
-    }
     
     func getJamfData(url: String){
-        let loginData = "\(jamfUser):\(jamfPassword)".data(using: String.Encoding.utf8)
+        
+        let defaults = UserDefaults.standard
+        if let jamfPassword = KeychainService.loadPassword(service: defaults.string(forKey: "jss_URL")!, account: defaults.string(forKey: "jamf_username")!) {
+            
+        
+        
+            let loginData = "\(defaults.string(forKey: "jamf_username")!):\(jamfPassword)".data(using: String.Encoding.utf8)
         let base64LoginString = loginData!.base64EncodedString()
         let headers = ["Accept": "application/json",
                        "Authorization": "Basic \(String(describing: base64LoginString))"]
@@ -44,7 +34,7 @@ class JamfCalls {
         let request = NSMutableURLRequest(url: NSURL(string: url)! as URL,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: 10.0)
-    
+            
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
         let sessionDelegate = SessionDelegate()
@@ -56,50 +46,35 @@ class JamfCalls {
     
             if (error != nil) {
                 DispatchQueue.main.async {
+                    
                     //self.errorOccured(typeOfError: "An Error Occured")
                 }
             } else {
                 do {
-                    switch httpResponse!.statusCode {
-                    case 401:
-                        DispatchQueue.main.async {
-                            //self.errorOccured(typeOfError: "Login Error")
-                        }
-    
-                    case 400:
-                        DispatchQueue.main.async {
-                            //self.errorOccured(typeOfError: "Bad Request")
-                        }
-                    case 404:
-                        DispatchQueue.main.async {
-                           // self.errorOccured(typeOfError: "404, something not found")
-                        }
-    
-                    case 200:
+                    if httpResponse!.statusCode == 200 {
                         self.computerList.removeAll()
                         
                         let decoder = JSONDecoder()
                         let computerData = try decoder.decode(advancedSearch.self, from: dataReturn!)
-    
+                        
                         for entries in computerData.advanced_computer_search.computers {
                             self.computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
-    
+                            
                         }
-                        
                         
                         DispatchQueue.main.async {
                             //self.tableView.reloadData()
-                            self.delegate?.didRecieveDataUpdate(data: self.computerList)
+                            self.delegate?.didRecieveDataUpdate(data: self.computerList, statusCode: httpResponse!.statusCode )
+                            
+                        }
 
-                        }
-                    default:
-                        DispatchQueue.main.async {
-                            //self.errorOccured(typeOfError: "Unknown Error Occured")
-                        }
+                    } else {
+                        self.delegate?.didRecieveDataUpdate(data: self.computerList, statusCode: httpResponse!.statusCode )
                     }
-    
-    
+                    
+                    
                 } catch {
+                    
                     DispatchQueue.main.async {
                         //self.errorOccured(typeOfError: "An Unknown Error Occured. I must quit now. Goodbye!")
     
@@ -108,25 +83,30 @@ class JamfCalls {
             }
         }
         task.resume()
+        }
         
+    
     }
     
     
     func putJamfData(jamfID: Int, date: String, availability: String, username: String) {
 
         var xmldata: String
-
-        let requestURL = "\(jamfURL)JSSResource/computers/id/\(jamfID)"
+        let defaults = UserDefaults.standard
+        if let jamfPassword = KeychainService.loadPassword(service: defaults.string(forKey: "jss_URL")!, account: defaults.string(forKey: "jamf_username")!) {
+            
+            
+            
+            let loginData = "\(defaults.string(forKey: "jamf_username")!):\(jamfPassword)".data(using: String.Encoding.utf8)
+            
+        let requestURL = "\(defaults.string(forKey: "jss_URL")!)JSSResource/computers/id/\(jamfID)"
         
         if availability == "Yes" {
-            xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username></username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(availabilityID)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(checkInID)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
+            xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username></username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(defaults.string(forKey: "availabilityID")!)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(defaults.string(forKey: "checkInID")!)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
         } else {
-            xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username>" + username + "</username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(availabilityID)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(checkOutID)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
+            xmldata = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><computer><location><username>" + username + "</username><real_name></real_name><email_address></email_address><department></department></location><extension_attributes><extension_attribute><id>\(defaults.string(forKey: "availabilityID")!)</id><value>" + availability + "</value></extension_attribute><extension_attribute><id>\(defaults.string(forKey: "checkOutID")!)</id><value>" + date + "</value></extension_attribute></extension_attributes></computer>"
         }
         
-
-        
-        let loginData = "\(jamfUser):\(jamfPassword)".data(using: String.Encoding.utf8)
         let base64LoginString = loginData!.base64EncodedString()
         let headers = [
             "Content-Type": "text/xml",
@@ -146,14 +126,12 @@ class JamfCalls {
         
         let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
             if (error != nil) {
-                //print(error!)
+                
             } else {
                 DispatchQueue.main.async {
-                
-                self.getJamfData(url: "\(jamfURL)JSSResource/advancedcomputersearches/id/\(acsID)")
+                self.getJamfData(url: "\(defaults.string(forKey: "jss_URL")!)JSSResource/advancedcomputersearches/id/\(defaults.string(forKey: "ACSID")!)")
                 }
-                //let httpResponse = response as? HTTPURLResponse
-                //print(httpResponse!)
+             
             }
 
         })
@@ -161,5 +139,5 @@ class JamfCalls {
         dataTask.resume()
 
     }
-
+    }
 }
