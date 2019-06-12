@@ -158,10 +158,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateOut)
             
             dateFormatter.dateFormat = "MM-dd-yyy"
+            if dateOut != nil {
             let updateDateString = dateFormatter.string(from: dateOut!)
             
-            cell.dateOutLabel.text = "Checked Out: \(updateDateString)"
-            
+                cell.dateOutLabel.text = "Checked Out: \(updateDateString)"
+            } else {
+                cell.dateOutLabel.text = "Checked Out:"
+            }
         } else {
             cell.dotImage.image = UIImage(named: "greendot")
             let dateFormatter = DateFormatter()
@@ -169,10 +172,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateReturned)
             
             dateFormatter.dateFormat = "MM-dd-yyy"
+            if dateOut != nil {
             let updateDateString = dateFormatter.string(from: dateOut!)
             
             cell.dateOutLabel.text = "Checked In: \(updateDateString)"
-            
+            } else {
+                cell.dateOutLabel.text = "Checked In:"
+            }
         }
         
         return cell
