@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03555A5F22C99CD1002069E1 /* Laptop Loaner Checkout.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Laptop Loaner Checkout.entitlements"; sourceTree = "<group>"; };
 		735B74AD2292089600914E7F /* Laptop Loaner Checkout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Laptop Loaner Checkout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		735B74B02292089600914E7F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		735B74B22292089600914E7F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 		735B74AF2292089600914E7F /* Laptop Loaner Checkout */ = {
 			isa = PBXGroup;
 			children = (
+				03555A5F22C99CD1002069E1 /* Laptop Loaner Checkout.entitlements */,
 				735B74B02292089600914E7F /* AppDelegate.swift */,
 				735B74B22292089600914E7F /* ViewController.swift */,
 				739F78FB22AF5748002CF74A /* modelDetect.swift */,
@@ -314,15 +316,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Laptop Loaner Checkout/Laptop Loaner Checkout.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2WUMX954UB;
 				INFOPLIST_FILE = "Laptop Loaner Checkout/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TrueTalentInc.Laptop-Loaner-Checkout";
+				PRODUCT_BUNDLE_IDENTIFIER = com.TTInc.LLC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -332,15 +337,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Laptop Loaner Checkout/Laptop Loaner Checkout.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2WUMX954UB;
 				INFOPLIST_FILE = "Laptop Loaner Checkout/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.TrueTalentInc.Laptop-Loaner-Checkout";
+				PRODUCT_BUNDLE_IDENTIFIER = com.TTInc.LLC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_UIKITFORMAC = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
