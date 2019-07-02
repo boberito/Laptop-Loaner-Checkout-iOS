@@ -14,6 +14,14 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        availabilityEATextField.delegate = self
+        checkOutEATextField.delegate = self
+        checkInEATextField.delegate = self
+        acsIDTextField.delegate = self
+        jamfProURLTextField.delegate = self
+        jamfUserTextField.delegate = self
+        
+        
         availabilityEATextField.text = defaults.string(forKey: "availabilityID") ?? ""
         checkOutEATextField.text = defaults.string(forKey: "checkOutID") ?? ""
         checkInEATextField.text = defaults.string(forKey: "checkInID") ?? ""
@@ -28,8 +36,10 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         else {jamfPasswordTextField.text = nil }
         
         
+        
     }
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var jamfProURLTextField: UITextField!
     @IBOutlet var jamfUserTextField: UITextField!
     @IBOutlet var jamfPasswordTextField: UITextField!
@@ -60,43 +70,44 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         saveClose()
         
     }
-
-    // Start Editing The Text Field
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        moveTextField(textField, moveDistance: -250, up: true)
-    }
-
-    // Finish Editing The Text Field
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        moveTextField(textField, moveDistance: -250, up: false)
-    }
-
-    // Hide the keyboard when the return key pressed
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+
+        if jamfProURLTextField.isFirstResponder {
+            jamfUserTextField.becomeFirstResponder()
+        } else if jamfUserTextField.isFirstResponder {
+            jamfPasswordTextField.becomeFirstResponder()
+        } else if jamfPasswordTextField.isFirstResponder {
+            acsIDTextField.becomeFirstResponder()
+        } else if acsIDTextField.isFirstResponder {
+            checkInEATextField.becomeFirstResponder()
+        } else if checkOutEATextField.isFirstResponder {
+            availabilityEATextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            saveClose()
+        }
         return true
     }
 
-    // Move the text field in a pretty animation!
-    func moveTextField(_ textField: UITextField, moveDistance: Int, up: Bool) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        moveTextField(textField, up: true)
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        moveTextField(textField, up: false)
+    }
+    
+    func moveTextField(_ textField: UITextField, up: Bool) {
         if UIDevice.modelName.contains("iPhone"){
             if textField.tag > 3 {
-                let moveDuration = 0.3
-                let movement: CGFloat = CGFloat(up ? moveDistance : -moveDistance)
-
-                UIView.beginAnimations("animateTextField", context: nil)
-                UIView.setAnimationBeginsFromCurrentState(true)
-                UIView.setAnimationDuration(moveDuration)
-                self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
-                UIView.commitAnimations()
+                if up {
+                    self.scrollView.contentOffset = CGPoint(x:0, y:350)
+                }else{
+                    self.scrollView.contentOffset = CGPoint(x:0, y:0)
+                }
             }
         }
-    }
-    @IBAction func keyboardReturnKeyTapped(_ sender: UITextField) {
-
-        saveClose()
-
-
     }
     
 }
