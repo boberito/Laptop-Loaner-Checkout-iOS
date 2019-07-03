@@ -18,8 +18,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var availabilityID: String?
     var checkInID: String?
     var checkOutID: String?
-    
     var settingsNeeded: Bool?
+    
     
     let defaults = UserDefaults.standard
     
@@ -42,6 +42,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             error(title: "Error!", message: "Something went wrong.")
     }
     
+        
+    }
+    
+    @IBAction func reloadButton(_ sender: Any){
+        reload()
         
     }
     
@@ -96,6 +101,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    func reload() {
+        if defaults.string(forKey: "availabilityID") != nil || defaults.string(forKey: "checkOutID") != nil || defaults.string(forKey: "checkInID") != nil || defaults.string(forKey: "ACSID") != nil || defaults.string(forKey: "jss_URL") != nil || defaults.string(forKey: "jamf_username") != nil {
+            
+            jamfUser = defaults.string(forKey: "jamf_username") ?? ""
+            jamfURL = defaults.string(forKey: "jss_URL") ?? ""
+            acsID = defaults.string(forKey: "ACSID") ?? ""
+            availabilityID = defaults.string(forKey: "availabilityID") ?? ""
+            checkInID = defaults.string(forKey: "checkInID") ?? ""
+            checkOutID = defaults.string(forKey: "checkOutID")  ?? ""
+        }
+        
+        apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
+        
+        tableView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         if settingsNeeded == true {
             settingsNeeded = false
@@ -112,19 +133,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         
         if motion == .motionShake {
-            if defaults.string(forKey: "availabilityID") != nil || defaults.string(forKey: "checkOutID") != nil || defaults.string(forKey: "checkInID") != nil || defaults.string(forKey: "ACSID") != nil || defaults.string(forKey: "jss_URL") != nil || defaults.string(forKey: "jamf_username") != nil {
-                
-                jamfUser = defaults.string(forKey: "jamf_username") ?? ""
-                jamfURL = defaults.string(forKey: "jss_URL") ?? ""
-                acsID = defaults.string(forKey: "ACSID") ?? ""
-                availabilityID = defaults.string(forKey: "availabilityID") ?? ""
-                checkInID = defaults.string(forKey: "checkInID") ?? ""
-                checkOutID = defaults.string(forKey: "checkOutID")  ?? ""
-            }
-            
-            apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
-            
-            tableView.reloadData()
+         reload()
         }
     }
     
