@@ -81,6 +81,8 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
             acsIDTextField.becomeFirstResponder()
         } else if acsIDTextField.isFirstResponder {
             checkInEATextField.becomeFirstResponder()
+        } else if checkInEATextField.isFirstResponder {
+            checkOutEATextField.becomeFirstResponder()
         } else if checkOutEATextField.isFirstResponder {
             availabilityEATextField.becomeFirstResponder()
         } else {
