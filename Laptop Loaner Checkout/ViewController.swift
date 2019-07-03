@@ -137,11 +137,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
         
         if UIDevice.modelName.contains("iPhone"){
-            if apiCalls.computerList[indexPath.row].name.count > 18 {
-                let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 18)
+            if apiCalls.computerList[indexPath.row].name.count > 16 {
+                let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 16)
                 let endIndex = apiCalls.computerList[indexPath.row].name.index(apiCalls.computerList[indexPath.row].name.endIndex, offsetBy: numToCut)
                 let truncated = apiCalls.computerList[indexPath.row].name.substring(to: endIndex)
-                cell.nameLabel.text = truncated
+                cell.nameLabel.text = "\(truncated)..."
             } else {
                 cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
             }
