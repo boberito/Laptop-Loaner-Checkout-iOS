@@ -113,8 +113,7 @@
                                 </constraints>
                                 <state key="normal" title="Settings" image="settings"/>
                                 <connections>
-                                    <action selector="settingsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qXm-F7-2iC"/>
-                                    <segue destination="1vT-PO-zsn" kind="show" identifier="prefSegue" id="xOi-6s-Uf7"/>
+                                    <segue destination="1vT-PO-zsn" kind="show" identifier="prefSegue" id="Ijm-rJ-eJz"/>
                                 </connections>
                             </button>
                         </subviews>

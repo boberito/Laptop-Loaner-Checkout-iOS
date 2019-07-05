@@ -9,8 +9,8 @@
 import UIKit
 import SystemConfiguration
 
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DataModelDelegate  {
-    
     
     var jamfUser: String?
     var jamfURL: String?
@@ -19,39 +19,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var checkInID: String?
     var checkOutID: String?
     var settingsNeeded: Bool?
-    
-    
     let defaults = UserDefaults.standard
     
     func didRecieveDataUpdate(data: [computerObject], statusCode: Int) {
-        
         switch statusCode{
         case 401:
-                error(title: "Login Incorrect", message: "Bad username and Password.")
+            error(title: "Login Incorrect", message: "Bad username and Password.")
         case 400:
             error(title: "Bad Request", message: "The request you sent to the server was somehow incorrect or corrupted and the server couldn't understand it.")
-            
         case 404:
-                error(title: "Not Found", message: "404, something not found.")
-            
-        
+            error(title: "Not Found", message: "404, something not found.")
         case 200:
             self.tableView.reloadData()
             
         default:
             error(title: "Error!", message: "Something went wrong.")
-    }
-    
+        }
+        
         
     }
     
     @IBAction func reloadButton(_ sender: Any){
         reload()
-        
-    }
-    
-    @IBAction func settingsButton(_ sender: Any) {
-        self.performSegue(withIdentifier: "prefSegue", sender: self)
         
     }
     
@@ -65,10 +54,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.becomeFirstResponder()
-
+        
         apiCalls.delegate = self
-        
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -86,17 +73,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             if KeychainService.loadPassword(service: jamfURL!, account: jamfUser!) != nil {
                 apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
-               
                 
                 tableView.reloadData()
             } else {
-     
+                
                 settingsNeeded = true
             }
         } else {
-
+            
             settingsNeeded = true
-    
+            
         }
         
     }
@@ -133,7 +119,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         
         if motion == .motionShake {
-         reload()
+            reload()
         }
     }
     
@@ -142,10 +128,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    #if !targetEnvironment(UIKitForMac)
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { context in
+            self.reload()
+        })
+    }
+    #endif
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
         
-        if UIDevice.modelName.contains("iPhone"){
+        let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
+        print("table?")
+        if UIDevice.modelName.contains("iPhone") && !UIApplication.shared.statusBarOrientation.isLandscape {
             if apiCalls.computerList[indexPath.row].name.count > 16 {
                 let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 16)
                 let endIndex = apiCalls.computerList[indexPath.row].name.index(apiCalls.computerList[indexPath.row].name.endIndex, offsetBy: numToCut)
@@ -168,8 +163,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
-            let updateDateString = dateFormatter.string(from: dateOut!)
-            
+                let updateDateString = dateFormatter.string(from: dateOut!)
+                
                 cell.dateOutLabel.text = "Checked Out: \(updateDateString)"
             } else {
                 cell.dateOutLabel.text = "Checked Out:"
@@ -182,9 +177,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
-            let updateDateString = dateFormatter.string(from: dateOut!)
-            
-            cell.dateOutLabel.text = "Checked In: \(updateDateString)"
+                let updateDateString = dateFormatter.string(from: dateOut!)
+                
+                cell.dateOutLabel.text = "Checked In: \(updateDateString)"
             } else {
                 cell.dateOutLabel.text = "Checked In:"
             }

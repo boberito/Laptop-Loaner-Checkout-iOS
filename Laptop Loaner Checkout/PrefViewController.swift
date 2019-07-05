@@ -72,7 +72,7 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
         if jamfProURLTextField.isFirstResponder {
             jamfUserTextField.becomeFirstResponder()
         } else if jamfUserTextField.isFirstResponder {
@@ -91,11 +91,11 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         }
         return true
     }
-
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         moveTextField(textField, up: true)
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         moveTextField(textField, up: false)
     }
