@@ -139,7 +139,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
-        print("table?")
+        
         if UIDevice.modelName.contains("iPhone") && !UIApplication.shared.statusBarOrientation.isLandscape {
             if apiCalls.computerList[indexPath.row].name.count > 16 {
                 let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 16)
