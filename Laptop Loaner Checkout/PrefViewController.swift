@@ -48,6 +48,10 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var checkOutEATextField: UITextField!
     @IBOutlet var availabilityEATextField: UITextField!
     
+    override func viewDidLayoutSubviews() {
+        scrollView.contentSize = CGSize.init(width: self.view.frame.width, height: 800)
+    }
+    
     func saveClose() {
         if jamfProURLTextField.text != nil || jamfProURLTextField.text != nil || jamfUserTextField.text != nil {
             KeychainService.savePassword(service: jamfProURLTextField.text!, account: jamfUserTextField.text!, data: jamfPasswordTextField.text!)
@@ -60,7 +64,8 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         defaults.set(jamfProURLTextField.text, forKey: "jss_URL")
         defaults.set(jamfUserTextField.text, forKey: "jamf_username")
         
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -92,24 +97,24 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        moveTextField(textField, up: true)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        moveTextField(textField, up: false)
-    }
-    
-    func moveTextField(_ textField: UITextField, up: Bool) {
-        if UIDevice.modelName.contains("iPhone"){
-            if textField.tag > 3 {
-                if up {
-                    self.scrollView.contentOffset = CGPoint(x:0, y:350)
-                }else{
-                    self.scrollView.contentOffset = CGPoint(x:0, y:0)
-                }
-            }
-        }
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        moveTextField(textField, up: true)
+//    }
+//
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        moveTextField(textField, up: false)
+//    }
+//
+//    func moveTextField(_ textField: UITextField, up: Bool) {
+//        if UIDevice.modelName.contains("iPhone"){
+//            if textField.tag > 3 {
+//                if up {
+//                    self.scrollView.contentOffset = CGPoint(x:0, y:350)
+//                }else{
+//                    self.scrollView.contentOffset = CGPoint(x:0, y:0)
+//                }
+//            }
+//        }
+//    }
     
 }

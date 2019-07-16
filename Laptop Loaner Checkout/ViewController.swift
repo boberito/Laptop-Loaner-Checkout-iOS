@@ -131,7 +131,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     #if !targetEnvironment(UIKitForMac)
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { context in
-            self.reload()
+            self.tableView.reloadData()
         })
     }
     #endif
@@ -149,7 +149,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             } else {
                 cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
             }
-            
+    
         } else {
             cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
         }
