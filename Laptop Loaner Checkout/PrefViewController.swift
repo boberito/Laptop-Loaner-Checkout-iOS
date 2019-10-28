@@ -48,8 +48,9 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var checkOutEATextField: UITextField!
     @IBOutlet var availabilityEATextField: UITextField!
     
+    
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = CGSize.init(width: self.view.frame.width, height: 800)
+        scrollView.contentSize = CGSize.init(width: self.view.frame.width, height: self.view.frame.size.height + 325)
     }
     
     func saveClose() {

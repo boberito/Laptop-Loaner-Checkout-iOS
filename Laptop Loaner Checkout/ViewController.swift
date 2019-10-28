@@ -21,6 +21,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var settingsNeeded: Bool?
     let defaults = UserDefaults.standard
     
+    var statusBarOrientation: UIInterfaceOrientation? {
+        get {
+            guard let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation else {
+                #if DEBUG
+                fatalError("Could not obtain UIInterfaceOrientation from a valid windowScene")
+                #else
+                return nil
+                #endif
+            }
+            return orientation
+        }
+    }
+    
+    
     func didRecieveDataUpdate(data: [computerObject], statusCode: Int) {
         switch statusCode{
         case 401:
@@ -128,7 +142,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    #if !targetEnvironment(UIKitForMac)
+    #if !targetEnvironment(macCatalyst)
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { context in
             self.tableView.reloadData()
@@ -137,10 +151,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     #endif
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
         
-        if UIDevice.modelName.contains("iPhone") && !UIApplication.shared.statusBarOrientation.isLandscape {
+        #if targetEnvironment(macCatalyst)
+            cell.actionButton.isHidden = false
+        #else
+            cell.actionButton.isHidden = true
+        #endif
+        
+        cell.actionButton.tag = indexPath.row
+        
+        let orientation = statusBarOrientation?.isLandscape ?? false
+        
+        if UIDevice.modelName.contains("iPhone") && !orientation {
+        //if UIDevice.modelName.contains("iPhone") && !UIApplication.shared.statusBarOrientation.isLandscape {
             if apiCalls.computerList[indexPath.row].name.count > 16 {
                 let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 16)
                 let endIndex = apiCalls.computerList[indexPath.row].name.index(apiCalls.computerList[indexPath.row].name.endIndex, offsetBy: numToCut)
@@ -157,6 +181,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if apiCalls.computerList[indexPath.row].Availability == "No" {
             cell.dotImage.image = UIImage(named: "reddot")
+            cell.actionButton.setImage(UIImage(named: "reddot"), for: .normal)
+            cell.actionButton.setTitle("Red!", for: .normal)
+            cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateOut)
@@ -171,6 +198,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         } else {
             cell.dotImage.image = UIImage(named: "greendot")
+            cell.actionButton.setTitle("Green!", for: .normal)
+            cell.actionButton.setImage(UIImage(named: "greendot"), for: .normal)
+            cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateReturned)
@@ -215,7 +245,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    
+    @IBAction func actionButton(_ sender: UIButton) {
+        if sender.imageView?.image == UIImage(named: "reddot") {
+            checkIn(selected: sender.tag)
+        }else {
+            dialogBox(selected: sender.tag)
+        }
+        reload()
+    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
