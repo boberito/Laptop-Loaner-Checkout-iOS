@@ -9,8 +9,8 @@
 import UIKit
 import SystemConfiguration
 
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DataModelDelegate  {
-    
     
     var jamfUser: String?
     var jamfURL: String?
@@ -18,35 +18,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var availabilityID: String?
     var checkInID: String?
     var checkOutID: String?
-    
     var settingsNeeded: Bool?
-    
     let defaults = UserDefaults.standard
     
+    var statusBarOrientation: UIInterfaceOrientation? {
+        get {
+            guard let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation else {
+                #if DEBUG
+                fatalError("Could not obtain UIInterfaceOrientation from a valid windowScene")
+                #else
+                return nil
+                #endif
+            }
+            return orientation
+        }
+    }
+    
+    
     func didRecieveDataUpdate(data: [computerObject], statusCode: Int) {
-        
         switch statusCode{
         case 401:
-                error(title: "Login Incorrect", message: "Bad username and Password.")
+            error(title: "Login Incorrect", message: "Bad username and Password.")
         case 400:
             error(title: "Bad Request", message: "The request you sent to the server was somehow incorrect or corrupted and the server couldn't understand it.")
-            
         case 404:
-                error(title: "Not Found", message: "404, something not found.")
-            
-        
+            error(title: "Not Found", message: "404, something not found.")
         case 200:
             self.tableView.reloadData()
             
         default:
             error(title: "Error!", message: "Something went wrong.")
-    }
-    
+        }
+        
         
     }
     
-    @IBAction func settingsButton(_ sender: Any) {
-        self.performSegue(withIdentifier: "prefSegue", sender: self)
+    @IBAction func reloadButton(_ sender: Any){
+        reload()
         
     }
     
@@ -60,10 +68,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.becomeFirstResponder()
-
+        
         apiCalls.delegate = self
-        
-        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -81,19 +87,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
             if KeychainService.loadPassword(service: jamfURL!, account: jamfUser!) != nil {
                 apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
-               
                 
                 tableView.reloadData()
             } else {
-     
+                
                 settingsNeeded = true
             }
         } else {
-
+            
             settingsNeeded = true
-    
+            
         }
         
+    }
+    
+    func reload() {
+        if defaults.string(forKey: "availabilityID") != nil || defaults.string(forKey: "checkOutID") != nil || defaults.string(forKey: "checkInID") != nil || defaults.string(forKey: "ACSID") != nil || defaults.string(forKey: "jss_URL") != nil || defaults.string(forKey: "jamf_username") != nil {
+            
+            jamfUser = defaults.string(forKey: "jamf_username") ?? ""
+            jamfURL = defaults.string(forKey: "jss_URL") ?? ""
+            acsID = defaults.string(forKey: "ACSID") ?? ""
+            availabilityID = defaults.string(forKey: "availabilityID") ?? ""
+            checkInID = defaults.string(forKey: "checkInID") ?? ""
+            checkOutID = defaults.string(forKey: "checkOutID")  ?? ""
+        }
+        
+        apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
+        
+        tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -112,19 +133,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         
         if motion == .motionShake {
-            if defaults.string(forKey: "availabilityID") != nil || defaults.string(forKey: "checkOutID") != nil || defaults.string(forKey: "checkInID") != nil || defaults.string(forKey: "ACSID") != nil || defaults.string(forKey: "jss_URL") != nil || defaults.string(forKey: "jamf_username") != nil {
-                
-                jamfUser = defaults.string(forKey: "jamf_username") ?? ""
-                jamfURL = defaults.string(forKey: "jss_URL") ?? ""
-                acsID = defaults.string(forKey: "ACSID") ?? ""
-                availabilityID = defaults.string(forKey: "availabilityID") ?? ""
-                checkInID = defaults.string(forKey: "checkInID") ?? ""
-                checkOutID = defaults.string(forKey: "checkOutID")  ?? ""
-            }
-            
-            apiCalls.getJamfData(url: "\(jamfURL!)JSSResource/advancedcomputersearches/id/\(acsID!)")
-            
-            tableView.reloadData()
+            reload()
         }
     }
     
@@ -133,19 +142,38 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    #if !targetEnvironment(macCatalyst)
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { context in
+            self.tableView.reloadData()
+        })
+    }
+    #endif
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "loanerCell") as! myTableViewCell
         
-        if UIDevice.modelName.contains("iPhone"){
-            if apiCalls.computerList[indexPath.row].name.count > 18 {
-                let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 18)
+        #if targetEnvironment(macCatalyst)
+            cell.actionButton.isHidden = false
+        #else
+            cell.actionButton.isHidden = true
+        #endif
+        
+        cell.actionButton.tag = indexPath.row
+        
+        let orientation = statusBarOrientation?.isLandscape ?? false
+        
+        if UIDevice.modelName.contains("iPhone") && !orientation {
+        //if UIDevice.modelName.contains("iPhone") && !UIApplication.shared.statusBarOrientation.isLandscape {
+            if apiCalls.computerList[indexPath.row].name.count > 16 {
+                let numToCut = -1 * (apiCalls.computerList[indexPath.row].name.count - 16)
                 let endIndex = apiCalls.computerList[indexPath.row].name.index(apiCalls.computerList[indexPath.row].name.endIndex, offsetBy: numToCut)
                 let truncated = apiCalls.computerList[indexPath.row].name.substring(to: endIndex)
-                cell.nameLabel.text = truncated
+                cell.nameLabel.text = "\(truncated)..."
             } else {
                 cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
             }
-            
+    
         } else {
             cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
         }
@@ -153,29 +181,35 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if apiCalls.computerList[indexPath.row].Availability == "No" {
             cell.dotImage.image = UIImage(named: "reddot")
+            cell.actionButton.setImage(UIImage(named: "reddot"), for: .normal)
+            cell.actionButton.setTitle("Red!", for: .normal)
+            cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateOut)
             
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
-            let updateDateString = dateFormatter.string(from: dateOut!)
-            
+                let updateDateString = dateFormatter.string(from: dateOut!)
+                
                 cell.dateOutLabel.text = "Checked Out: \(updateDateString)"
             } else {
                 cell.dateOutLabel.text = "Checked Out:"
             }
         } else {
             cell.dotImage.image = UIImage(named: "greendot")
+            cell.actionButton.setTitle("Green!", for: .normal)
+            cell.actionButton.setImage(UIImage(named: "greendot"), for: .normal)
+            cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
             let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateReturned)
             
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
-            let updateDateString = dateFormatter.string(from: dateOut!)
-            
-            cell.dateOutLabel.text = "Checked In: \(updateDateString)"
+                let updateDateString = dateFormatter.string(from: dateOut!)
+                
+                cell.dateOutLabel.text = "Checked In: \(updateDateString)"
             } else {
                 cell.dateOutLabel.text = "Checked In:"
             }
@@ -211,7 +245,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    
+    @IBAction func actionButton(_ sender: UIButton) {
+        if sender.imageView?.image == UIImage(named: "reddot") {
+            checkIn(selected: sender.tag)
+        }else {
+            dialogBox(selected: sender.tag)
+        }
+        reload()
+    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         

@@ -19,7 +19,7 @@ class SessionDelegate:NSObject, URLSessionDelegate
             let range = start..<end
             let shortURL = jamfURL[range]
             
-            print(shortURL)
+            //print(shortURL)
             if(challenge.protectionSpace.host == shortURL)
             {
                 let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)

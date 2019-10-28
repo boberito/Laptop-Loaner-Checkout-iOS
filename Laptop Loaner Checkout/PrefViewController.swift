@@ -14,6 +14,14 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        availabilityEATextField.delegate = self
+        checkOutEATextField.delegate = self
+        checkInEATextField.delegate = self
+        acsIDTextField.delegate = self
+        jamfProURLTextField.delegate = self
+        jamfUserTextField.delegate = self
+        
+        
         availabilityEATextField.text = defaults.string(forKey: "availabilityID") ?? ""
         checkOutEATextField.text = defaults.string(forKey: "checkOutID") ?? ""
         checkInEATextField.text = defaults.string(forKey: "checkInID") ?? ""
@@ -28,8 +36,10 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         else {jamfPasswordTextField.text = nil }
         
         
+        
     }
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var jamfProURLTextField: UITextField!
     @IBOutlet var jamfUserTextField: UITextField!
     @IBOutlet var jamfPasswordTextField: UITextField!
@@ -37,17 +47,16 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var checkInEATextField: UITextField!
     @IBOutlet var checkOutEATextField: UITextField!
     @IBOutlet var availabilityEATextField: UITextField!
-   
     
-
     
-    @IBAction func saveButton(_ sender: Any) {
-        
+    override func viewDidLayoutSubviews() {
+        scrollView.contentSize = CGSize.init(width: self.view.frame.width, height: self.view.frame.size.height + 325)
+    }
+    
+    func saveClose() {
         if jamfProURLTextField.text != nil || jamfProURLTextField.text != nil || jamfUserTextField.text != nil {
             KeychainService.savePassword(service: jamfProURLTextField.text!, account: jamfUserTextField.text!, data: jamfPasswordTextField.text!)
         }
-        
-        
         
         defaults.set(availabilityEATextField.text, forKey: "availabilityID")
         defaults.set(checkOutEATextField.text, forKey: "checkOutID")
@@ -56,47 +65,57 @@ class PrefViewController: UIViewController, UITextFieldDelegate {
         defaults.set(jamfProURLTextField.text, forKey: "jss_URL")
         defaults.set(jamfUserTextField.text, forKey: "jamf_username")
         
+        //dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    
+    @IBAction func saveButton(_ sender: Any) {
         
-        dismiss(animated: true, completion: nil)
-    }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-    // Start Editing The Text Field
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        moveTextField(textField, moveDistance: -250, up: true)
+        saveClose()
+        
     }
     
-    // Finish Editing The Text Field
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        moveTextField(textField, moveDistance: -250, up: false)
-    }
-    
-    // Hide the keyboard when the return key pressed
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        
+        if jamfProURLTextField.isFirstResponder {
+            jamfUserTextField.becomeFirstResponder()
+        } else if jamfUserTextField.isFirstResponder {
+            jamfPasswordTextField.becomeFirstResponder()
+        } else if jamfPasswordTextField.isFirstResponder {
+            acsIDTextField.becomeFirstResponder()
+        } else if acsIDTextField.isFirstResponder {
+            checkInEATextField.becomeFirstResponder()
+        } else if checkInEATextField.isFirstResponder {
+            checkOutEATextField.becomeFirstResponder()
+        } else if checkOutEATextField.isFirstResponder {
+            availabilityEATextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+            saveClose()
+        }
         return true
     }
     
-    // Move the text field in a pretty animation!
-    func moveTextField(_ textField: UITextField, moveDistance: Int, up: Bool) {
-        if textField.tag > 3 {
-        let moveDuration = 0.3
-        let movement: CGFloat = CGFloat(up ? moveDistance : -moveDistance)
-        
-        UIView.beginAnimations("animateTextField", context: nil)
-        UIView.setAnimationBeginsFromCurrentState(true)
-        UIView.setAnimationDuration(moveDuration)
-        self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
-        UIView.commitAnimations()
-        }
-    }
-
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        moveTextField(textField, up: true)
+//    }
+//
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        moveTextField(textField, up: false)
+//    }
+//
+//    func moveTextField(_ textField: UITextField, up: Bool) {
+//        if UIDevice.modelName.contains("iPhone"){
+//            if textField.tag > 3 {
+//                if up {
+//                    self.scrollView.contentOffset = CGPoint(x:0, y:350)
+//                }else{
+//                    self.scrollView.contentOffset = CGPoint(x:0, y:0)
+//                }
+//            }
+//        }
+//    }
+    
 }

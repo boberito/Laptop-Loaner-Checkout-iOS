@@ -13,10 +13,9 @@ class myTableViewCell: UITableViewCell {
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var userNameLabel: UILabel!
     @IBOutlet var dateOutLabel: UILabel!
-    
     @IBOutlet var dotImage: UIImageView!
+    @IBOutlet var actionButton: UIButton!
     
-
     
     override func awakeFromNib() {
         super.awakeFromNib()
