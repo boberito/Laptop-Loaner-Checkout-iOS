@@ -47,7 +47,7 @@ class JamfCalls {
             if (error != nil) {
                 DispatchQueue.main.async {
                     
-                    //self.errorOccured(typeOfError: "An Error Occured")
+                    print("An Error Occured")
                 }
             } else {
                 do {
@@ -58,7 +58,7 @@ class JamfCalls {
                         let computerData = try decoder.decode(advancedSearch.self, from: dataReturn!)
                         
                         for entries in computerData.advanced_computer_search.computers {
-                            self.computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateReturned, DateOut: entries.DateOut, Availability: entries.Availability, Username: entries.Username, Department: entries.Department))
+                            self.computerList.append(computerObject(name: entries.name, id: entries.id, DateReturned: entries.DateCheckedIn, DateOut: entries.DateCheckedOut, Availability: entries.LoanerAvailability, Username: entries.Username, Department: entries.Department))
                             
                         }
                         
@@ -76,7 +76,7 @@ class JamfCalls {
                 } catch {
                     
                     DispatchQueue.main.async {
-                        //self.errorOccured(typeOfError: "An Unknown Error Occured. I must quit now. Goodbye!")
+                        print("An Unknown Error Occured. I must quit now. Goodbye!")
     
                     }
                 }

@@ -177,16 +177,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else {
             cell.nameLabel.text = apiCalls.computerList[indexPath.row].name
         }
-        cell.userNameLabel.text = apiCalls.computerList[indexPath.row].Username
         
-        if apiCalls.computerList[indexPath.row].Availability == "No" {
+        
+        if apiCalls.computerList[indexPath.row].LoanerAvailability == "No" {
+            cell.userNameLabel.text = apiCalls.computerList[indexPath.row].Username
             cell.dotImage.image = UIImage(named: "reddot")
             cell.actionButton.setImage(UIImage(named: "reddot"), for: .normal)
             cell.actionButton.setTitle("Red!", for: .normal)
             cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
-            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateOut)
+            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateCheckedOut)
             
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
@@ -203,8 +204,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.actionButton.addTarget(self, action: #selector(actionButton), for: .touchUpInside)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat =  "yyyy-MM-dd"
-            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateReturned)
-            
+            let dateOut = dateFormatter.date(from: apiCalls.computerList[indexPath.row].DateCheckedIn)
+            cell.userNameLabel.text = ""
             dateFormatter.dateFormat = "MM-dd-yyy"
             if dateOut != nil {
                 let updateDateString = dateFormatter.string(from: dateOut!)
@@ -221,7 +222,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
-            if self.apiCalls.computerList[indexPath.row].Availability == "No" {
+            if self.apiCalls.computerList[indexPath.row].LoanerAvailability == "No" {
                 self.checkIn(selected: indexPath.row)
             } else {
                 //
@@ -232,7 +233,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         changeStatus.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
-        if apiCalls.computerList[indexPath.row].Availability == "No" {
+        if apiCalls.computerList[indexPath.row].LoanerAvailability == "No" {
             changeStatus.title = "Check In"
             changeStatus.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
             
@@ -257,7 +258,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let changeStatus = UIContextualAction(style: .normal, title: "Check Out") { (action, view, nil) in
-            if self.apiCalls.computerList[indexPath.row].Availability == "No" {
+            if self.apiCalls.computerList[indexPath.row].LoanerAvailability == "No" {
                 self.checkIn(selected: indexPath.row)
             } else {
                 self.dialogBox(selected: indexPath.row)
@@ -266,7 +267,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         changeStatus.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
         
-        if apiCalls.computerList[indexPath.row].Availability == "No" {
+        if apiCalls.computerList[indexPath.row].LoanerAvailability == "No" {
             changeStatus.title = "Check In"
             changeStatus.backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
             

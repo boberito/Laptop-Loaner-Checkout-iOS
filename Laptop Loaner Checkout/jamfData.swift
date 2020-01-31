@@ -17,9 +17,9 @@ struct advancedSearch: Decodable {
         struct computers: Decodable {
             let name: String
             let id: Int
-            let DateReturned: String
-            let DateOut: String
-            let Availability: String
+            let DateCheckedIn: String
+            let DateCheckedOut: String
+            let LoanerAvailability: String
             let Username: String
             let Department: String
         }

@@ -10,18 +10,18 @@ import Foundation
 class computerObject {
     var name: String
     var id: Int
-    var DateReturned: String
-    var DateOut: String
-    var Availability: String
+    var DateCheckedIn: String
+    var DateCheckedOut: String
+    var LoanerAvailability: String
     var Username: String
     var Department: String
     
     init(name: String, id: Int, DateReturned: String, DateOut: String, Availability: String, Username: String, Department: String) {
         self.name = name
         self.id = id
-        self.DateReturned = DateReturned
-        self.DateOut = DateOut
-        self.Availability = Availability
+        self.DateCheckedIn = DateReturned
+        self.DateCheckedOut = DateOut
+        self.LoanerAvailability = Availability
         self.Username = Username
         self.Department = Department
     }
