@@ -25,7 +25,7 @@ class JamfCalls {
             
         
         
-            let loginData = "\(defaults.string(forKey: "jamf_username")!):\(jamfPassword)".data(using: String.Encoding.utf8)
+        let loginData = "\(defaults.string(forKey: "jamf_username")!):\(jamfPassword)".data(using: String.Encoding.utf8)
         let base64LoginString = loginData!.base64EncodedString()
         let headers = ["Accept": "application/json",
                        "Authorization": "Basic \(String(describing: base64LoginString))"]
@@ -43,7 +43,7 @@ class JamfCalls {
         let task = session.dataTask(with: request as URLRequest) {data,response,error in
             let httpResponse = response as? HTTPURLResponse
             let dataReturn = data
-    
+            
             if (error != nil) {
                 DispatchQueue.main.async {
                     
